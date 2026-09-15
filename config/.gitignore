@@ -1,0 +1,8 @@
+service.json
+*.db
+*.db-shm
+*.db-wal
+logs/
+cache/
+state/
+backups/

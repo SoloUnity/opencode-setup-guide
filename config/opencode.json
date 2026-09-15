@@ -1,0 +1,253 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+    "mcp": {
+    "servers": {
+      "tool-gateway": {
+        "type": "remote",
+        "url": "https://tool-gateway.shopify.io/mcp",
+        "oauth": false,
+        "headers": {
+          "Authorization": "Bearer {env:TOOL_GATEWAY_TOKEN}"
+        }
+      },
+      "craft": {
+        "type": "remote",
+        "url": "https://mcp.craft.do/my/mcp",
+        "disabled": true
+      }
+    }
+  },
+  "plugins": [
+    "oh-my-opencode-slim@2.2.19",
+    "./plugins/agent-order/plugin"
+  ],
+  "agents": {
+    "build": {
+      "color": "#10B981",
+      "permissions": [
+        {
+          "action": "subagent",
+          "resource": "explorer",
+          "effect": "deny"
+        },
+        {
+          "action": "subagent",
+          "resource": "librarian",
+          "effect": "deny"
+        },
+        {
+          "action": "subagent",
+          "resource": "oracle",
+          "effect": "deny"
+        },
+        {
+          "action": "subagent",
+          "resource": "designer",
+          "effect": "deny"
+        },
+        {
+          "action": "subagent",
+          "resource": "fixer",
+          "effect": "deny"
+        },
+        {
+          "action": "subagent",
+          "resource": "observer",
+          "effect": "deny"
+        },
+        {
+          "action": "subagent",
+          "resource": "council",
+          "effect": "deny"
+        },
+        {
+          "action": "subagent",
+          "resource": "councillor",
+          "effect": "deny"
+        },
+        {
+          "action": "subagent",
+          "resource": "councillor-*",
+          "effect": "deny"
+        },
+        {
+          "action": "task_*",
+          "resource": "*",
+          "effect": "deny"
+        },
+        {
+          "action": "wait_for_user",
+          "resource": "*",
+          "effect": "deny"
+        },
+        {
+          "action": "acp_run",
+          "resource": "*",
+          "effect": "deny"
+        },
+        {
+          "action": "ast_grep_*",
+          "resource": "*",
+          "effect": "deny"
+        },
+        {
+          "action": "skill",
+          "resource": "simplify",
+          "effect": "deny"
+        },
+        {
+          "action": "skill",
+          "resource": "codemap",
+          "effect": "deny"
+        },
+        {
+          "action": "skill",
+          "resource": "clonedeps",
+          "effect": "deny"
+        },
+        {
+          "action": "skill",
+          "resource": "deepwork",
+          "effect": "deny"
+        },
+        {
+          "action": "skill",
+          "resource": "verification-planning",
+          "effect": "deny"
+        },
+        {
+          "action": "skill",
+          "resource": "reflect",
+          "effect": "deny"
+        },
+        {
+          "action": "skill",
+          "resource": "oh-my-opencode-slim",
+          "effect": "deny"
+        },
+        {
+          "action": "skill",
+          "resource": "worktrees",
+          "effect": "deny"
+        }
+      ]
+    },
+    "plan": {
+      "color": "#3B82F6",
+      "permissions": [
+        {
+          "action": "subagent",
+          "resource": "explorer",
+          "effect": "deny"
+        },
+        {
+          "action": "subagent",
+          "resource": "librarian",
+          "effect": "deny"
+        },
+        {
+          "action": "subagent",
+          "resource": "oracle",
+          "effect": "deny"
+        },
+        {
+          "action": "subagent",
+          "resource": "designer",
+          "effect": "deny"
+        },
+        {
+          "action": "subagent",
+          "resource": "fixer",
+          "effect": "deny"
+        },
+        {
+          "action": "subagent",
+          "resource": "observer",
+          "effect": "deny"
+        },
+        {
+          "action": "subagent",
+          "resource": "council",
+          "effect": "deny"
+        },
+        {
+          "action": "subagent",
+          "resource": "councillor",
+          "effect": "deny"
+        },
+        {
+          "action": "subagent",
+          "resource": "councillor-*",
+          "effect": "deny"
+        },
+        {
+          "action": "task_*",
+          "resource": "*",
+          "effect": "deny"
+        },
+        {
+          "action": "wait_for_user",
+          "resource": "*",
+          "effect": "deny"
+        },
+        {
+          "action": "acp_run",
+          "resource": "*",
+          "effect": "deny"
+        },
+        {
+          "action": "ast_grep_*",
+          "resource": "*",
+          "effect": "deny"
+        },
+        {
+          "action": "skill",
+          "resource": "simplify",
+          "effect": "deny"
+        },
+        {
+          "action": "skill",
+          "resource": "codemap",
+          "effect": "deny"
+        },
+        {
+          "action": "skill",
+          "resource": "clonedeps",
+          "effect": "deny"
+        },
+        {
+          "action": "skill",
+          "resource": "deepwork",
+          "effect": "deny"
+        },
+        {
+          "action": "skill",
+          "resource": "verification-planning",
+          "effect": "deny"
+        },
+        {
+          "action": "skill",
+          "resource": "reflect",
+          "effect": "deny"
+        },
+        {
+          "action": "skill",
+          "resource": "oh-my-opencode-slim",
+          "effect": "deny"
+        },
+        {
+          "action": "skill",
+          "resource": "worktrees",
+          "effect": "deny"
+        }
+      ]
+    },
+    "orchestrator": {
+      "color": "#F97316"
+    },
+    "council": {
+      "color": "#8B5CF6",
+      "mode": "all"
+    }
+  }
+}

@@ -1,0 +1,41 @@
+# Operating-system files
+.DS_Store
+Thumbs.db
+
+# Secrets and local environment files
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*secret*
+*token*
+
+# OpenCode runtime state
+service.json
+*.db
+*.db-shm
+*.db-wal
+logs/
+log/
+cache/
+state/
+tmp/
+backups/
+*.bak
+*.backup
+*.backup-*
+*.pre-*
+
+# JavaScript dependencies and test output
+node_modules/
+coverage/
+dist/
+.npm/
+.bun/
+
+# Local plugin checkout stores
+.opencode-plugin-store/
+
+# Each local plugin is published from its own repository.
+/plugins/

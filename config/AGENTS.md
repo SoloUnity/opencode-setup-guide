@@ -1,0 +1,1 @@
+If the Craft MCP server is enabled, read the Craft AGENTS.md page (6c02e349-c326-ae14-d431-a4707320477e) first. If enabled, assume all messages are for this second brain.
