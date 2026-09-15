@@ -62,7 +62,7 @@ node -e 'const major = Number(process.versions.node.split(".")[0]); if (major < 
 
 mkdir -p "$CONFIG_DIR/plugins" "$DATA_DIR"
 
-if ! opencode2 plugin list 2>/dev/null | grep -q 'oh-my-opencode-slim.*2\.2\.19'; then
+if [ ! -f "$CONFIG_DIR/opencode.json" ] || ! grep -Fq 'oh-my-opencode-slim@2.2.19' "$CONFIG_DIR/opencode.json"; then
   opencode2 plugin add "$OMO_PACKAGE"
 fi
 
