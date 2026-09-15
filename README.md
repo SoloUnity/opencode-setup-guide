@@ -25,15 +25,16 @@ upstream license and its OpenAI/Anthropic license rider remain in force.
 - The global `opencode.json` configuration.
 - The global `cli.json` configuration, with portable relative plugin paths.
 - The `oh-my-opencode-slim.json` configuration.
+- The active `tui.json` plugin badge configuration.
 - The one-line global `AGENTS.md` instruction file.
 - A safe installer that clones the four plugin repositories and creates the
   expected plugin links.
 - Tests and documentation for each local plugin.
 
-The Slim-managed skills are intentionally not copied. The package installs and
-updates these skills: `clonedeps`, `codemap`, `deepwork`,
-`verification-planning`, `reflect`, `simplify`, `worktrees`, and
-`oh-my-opencode-slim`.
+The Slim-managed skills are intentionally not copied. The installer runs the
+upstream Slim installer to install and update these skills:
+`clonedeps`, `codemap`, `deepwork`, `verification-planning`, `reflect`,
+`simplify`, `worktrees`, and `oh-my-opencode-slim`.
 
 ## What is not included
 
@@ -45,7 +46,6 @@ The following files are machine state and must stay private:
 - Provider credentials, OAuth credentials, and the
   `TOOL_GATEWAY_TOKEN` value.
 - The `dcg` executable and its local history database.
-- The legacy `tui.json` file. The active V2 CLI settings are in `cli.json`.
 
 The `.gitignore` prevents these classes of files from entering this repository.
 
@@ -89,10 +89,12 @@ The installer:
 1. Checks the required local commands.
 2. Checks out and builds `oh-my-opencode-slim` from its upstream `v2.2.19`
    tag.
-3. Clones the four plugin repositories into the OpenCode data directory.
-4. Creates links under `${XDG_CONFIG_HOME:-$HOME/.config}/opencode/plugins`.
-5. Backs up conflicting existing configuration and plugin entries.
-6. Installs the tracked configuration files.
+3. Runs the upstream Slim installer with the eight managed skills forced to the
+   pinned tag and enables the current background-subagent shell settings.
+4. Clones the four plugin repositories into the OpenCode data directory.
+5. Creates links under `${XDG_CONFIG_HOME:-$HOME/.config}/opencode/plugins`.
+6. Backs up conflicting existing configuration and plugin entries.
+7. Installs the tracked configuration files.
 
 Start a new OpenCode process after installation. The shared background service
 loads plugins at startup.
@@ -135,6 +137,11 @@ not required by this repository.
 The model names in `config/oh-my-opencode-slim.json` are the exact names from
 the captured setup. A different OpenCode account or provider may need different
 model IDs.
+
+The current Shopify development shell injects provider settings and credentials
+through environment variables. Those values are deliberately absent here. Use
+your own approved provider authentication and environment configuration instead
+of copying them into Git.
 
 ## License and provenance
 

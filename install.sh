@@ -89,7 +89,16 @@ node -e 'const major = Number(process.versions.node.split(".")[0]); if (major < 
 mkdir -p "$CONFIG_DIR/plugins" "$DATA_DIR"
 
 clone_tagged "$DATA_DIR/oh-my-opencode-slim" "$OMO_REPOSITORY" "$OMO_TAG"
-(cd "$DATA_DIR/oh-my-opencode-slim" && bun install --frozen-lockfile && bun run build)
+mkdir -p "$DATA_DIR/.bin"
+ln -sfn "$(command -v opencode2)" "$DATA_DIR/.bin/opencode"
+(
+  export PATH="$DATA_DIR/.bin:$PATH"
+  cd "$DATA_DIR/oh-my-opencode-slim"
+  bun install --frozen-lockfile && \
+  bun run build && \
+  bun dist/cli/index.js install --no-tui --skills=force --companion=no \
+    --background-subagents=yes --background-subagents-target="$HOME/.zshrc"
+)
 
 clone_or_update "$DATA_DIR/opencode-agent-order" opencode-agent-order
 clone_or_update "$DATA_DIR/opencode-dcg-guard" opencode-dcg-guard
@@ -102,7 +111,7 @@ link_plugin "$CONFIG_DIR/plugins/herdr-opencode" "$DATA_DIR/herdr-opencode"
 link_plugin "$CONFIG_DIR/plugins/herdr-subagent-panes" "$DATA_DIR/herdr-subagent-panes"
 link_plugin "$CONFIG_DIR/plugins/dcg-guard.js" "$DATA_DIR/opencode-dcg-guard/dcg-guard.js"
 
-for file in opencode.json cli.json oh-my-opencode-slim.json AGENTS.md; do
+for file in opencode.json cli.json oh-my-opencode-slim.json tui.json AGENTS.md; do
   target="$CONFIG_DIR/$file"
   if [ -e "$target" ] || [ -L "$target" ]; then
     if cmp -s "$SCRIPT_DIR/config/$file" "$target"; then
