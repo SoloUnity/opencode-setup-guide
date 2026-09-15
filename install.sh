@@ -6,7 +6,8 @@ readonly CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/opencode"
 readonly DATA_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/opencode-setup/plugins"
 readonly BACKUP_DIR="$CONFIG_DIR/backups/setup-$(date +%Y%m%d-%H%M%S)"
 readonly GITHUB_OWNER="${OPENCODE_SETUP_GITHUB_OWNER:-SoloUnity}"
-readonly OMO_PACKAGE="oh-my-opencode-slim@2.2.19"
+readonly OMO_REPOSITORY="https://github.com/alvinunreal/oh-my-opencode-slim.git"
+readonly OMO_TAG="v2.2.19"
 
 die() {
   printf 'error: %s\n' "$1" >&2
@@ -37,6 +38,21 @@ clone_or_update() {
   fi
 }
 
+clone_tagged() {
+  local target="$1"
+  local repository="$2"
+  local tag="$3"
+  if [ -d "$target/.git" ]; then
+    local current
+    current="$(git -C "$target" describe --tags --exact-match 2>/dev/null || true)"
+    [ "$current" = "$tag" ] || die "existing checkout is not $tag: $target"
+  elif [ -e "$target" ]; then
+    die "plugin store path exists but is not a Git checkout: $target"
+  else
+    git clone --quiet --depth 1 --branch "$tag" "$repository" "$target"
+  fi
+}
+
 link_plugin() {
   local target="$1"
   local source="$2"
@@ -50,10 +66,20 @@ link_plugin() {
 need_command opencode2
 need_command git
 need_command node
+if ! command -v bun >/dev/null 2>&1; then
+  need_command curl
+  bun_installer="$(mktemp)"
+  curl -fsSL -o "$bun_installer" https://bun.sh/install
+  BUN_INSTALL="$HOME/.bun" bash "$bun_installer"
+  export PATH="$HOME/.bun/bin:$PATH"
+fi
+need_command bun
 if ! command -v dcg >/dev/null 2>&1; then
   need_command curl
-  curl -fsSL "https://raw.githubusercontent.com/Dicklesworthstone/destructive_command_guard/main/install.sh?$(date +%s)" \
-    | bash -s -- --easy-mode
+  dcg_installer="$(mktemp)"
+  curl -fsSL -o "$dcg_installer" \
+    "https://raw.githubusercontent.com/Dicklesworthstone/destructive_command_guard/main/install.sh?$(date +%s)"
+  bash "$dcg_installer" --easy-mode
 fi
 need_command dcg
 
@@ -62,9 +88,8 @@ node -e 'const major = Number(process.versions.node.split(".")[0]); if (major < 
 
 mkdir -p "$CONFIG_DIR/plugins" "$DATA_DIR"
 
-if [ ! -f "$CONFIG_DIR/opencode.json" ] || ! grep -Fq 'oh-my-opencode-slim@2.2.19' "$CONFIG_DIR/opencode.json"; then
-  opencode2 plugin add "$OMO_PACKAGE"
-fi
+clone_tagged "$DATA_DIR/oh-my-opencode-slim" "$OMO_REPOSITORY" "$OMO_TAG"
+(cd "$DATA_DIR/oh-my-opencode-slim" && bun install --frozen-lockfile && bun run build)
 
 clone_or_update "$DATA_DIR/opencode-agent-order" opencode-agent-order
 clone_or_update "$DATA_DIR/opencode-dcg-guard" opencode-dcg-guard
@@ -72,6 +97,7 @@ clone_or_update "$DATA_DIR/herdr-opencode" herdr-opencode
 clone_or_update "$DATA_DIR/herdr-subagent-panes" herdr-subagent-panes
 
 link_plugin "$CONFIG_DIR/plugins/agent-order" "$DATA_DIR/opencode-agent-order"
+link_plugin "$CONFIG_DIR/plugins/oh-my-opencode-slim" "$DATA_DIR/oh-my-opencode-slim"
 link_plugin "$CONFIG_DIR/plugins/herdr-opencode" "$DATA_DIR/herdr-opencode"
 link_plugin "$CONFIG_DIR/plugins/herdr-subagent-panes" "$DATA_DIR/herdr-subagent-panes"
 link_plugin "$CONFIG_DIR/plugins/dcg-guard.js" "$DATA_DIR/opencode-dcg-guard/dcg-guard.js"

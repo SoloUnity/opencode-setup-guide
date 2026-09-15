@@ -15,10 +15,10 @@ The active local plugins are published separately:
 | Herdr primary reporting | [herdr-opencode](https://github.com/SoloUnity/herdr-opencode) | Apache-2.0 | Reports the primary OpenCode session to Herdr. It contains modified Herdr source. |
 | Herdr subagent panes | [herdr-subagent-panes](https://github.com/SoloUnity/herdr-subagent-panes) | MIT | Opens and manages Herdr panes for child sessions. |
 
-The other active plugin is the third-party package
-`oh-my-opencode-slim@2.2.19`. It is installed from its upstream project and is
-not copied into this repository. Its upstream license and its OpenAI/Anthropic
-license rider remain in force.
+The other active plugin is the third-party
+`oh-my-opencode-slim@2.2.19` release. The installer checks out and builds its
+upstream `v2.2.19` tag; it does not copy that source into this repository. Its
+upstream license and its OpenAI/Anthropic license rider remain in force.
 
 ## What is included
 
@@ -58,6 +58,7 @@ Install these tools first:
 - OpenCode V2. The captured setup used `opencode2 v0.0.0-beta-19242`.
 - Git.
 - Node.js 22 or later for plugin tests.
+- Bun, used to build the upstream Slim plugin tag.
 - `dcg` 0.14.3 or a compatible release. Install it from the
   [Destructive Command Guard project](https://github.com/Dicklesworthstone/destructive_command_guard).
 - Herdr 0.9.0 when Herdr reporting and child panes are wanted.
@@ -86,8 +87,8 @@ cd opencode-setup-guide
 The installer:
 
 1. Checks the required local commands.
-2. Installs or verifies `oh-my-opencode-slim@2.2.19` with OpenCode's plugin
-   manager.
+2. Checks out and builds `oh-my-opencode-slim` from its upstream `v2.2.19`
+   tag.
 3. Clones the four plugin repositories into the OpenCode data directory.
 4. Creates links under `${XDG_CONFIG_HOME:-$HOME/.config}/opencode/plugins`.
 5. Backs up conflicting existing configuration and plugin entries.

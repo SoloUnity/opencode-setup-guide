@@ -18,7 +18,7 @@
     }
   },
   "plugins": [
-    "oh-my-opencode-slim@2.2.19",
+    "./plugins/oh-my-opencode-slim",
     "./plugins/agent-order/plugin"
   ],
   "agents": {
